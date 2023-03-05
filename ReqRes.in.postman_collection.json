@@ -1,0 +1,475 @@
+{
+	"info": {
+		"_postman_id": "22e5a6db-09f4-43d2-9c32-27e650ff5474",
+		"name": "ReqRes.in",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Single user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Check response has data object\", function () {\r",
+							"    pm.response.to.have.jsonBody('data');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response has support object\", function () {\r",
+							"    pm.response.to.have.jsonBody('support');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data object contains id, email, first_name, last_name, avatar fields\", function () {\r",
+							"    pm.response.to.have.jsonBody('data.id');\r",
+							"    pm.response.to.have.jsonBody('data.email');\r",
+							"    pm.response.to.have.jsonBody('data.first_name');\r",
+							"    pm.response.to.have.jsonBody('data.last_name');\r",
+							"    pm.response.to.have.jsonBody('data.avatar');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check support object contains url and text fields\", function () {\r",
+							"    pm.response.to.have.jsonBody('support.url');\r",
+							"    pm.response.to.have.jsonBody('support.text');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data type for each key in the data object is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.data.id).to.be.a('number');\r",
+							"    pm.expect(jsonData.data.email).to.be.a('string');\r",
+							"    pm.expect(jsonData.data.first_name).to.be.a('string');\r",
+							"    pm.expect(jsonData.data.last_name).to.be.a('string');\r",
+							"    pm.expect(jsonData.data.avatar).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data type for each key in the support object is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.support.url).to.be.a('string');\r",
+							"    pm.expect(jsonData.support.text).to.be.a('string');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single Resourse",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Check response has data object\", function () {\r",
+							"    pm.response.to.have.jsonBody('data');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response has support object\", function () {\r",
+							"    pm.response.to.have.jsonBody('support');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data object contains id, name, year, color, pantone_value fields\", function () {\r",
+							"    pm.response.to.have.jsonBody('data.id');\r",
+							"    pm.response.to.have.jsonBody('data.name');\r",
+							"    pm.response.to.have.jsonBody('data.year');\r",
+							"    pm.response.to.have.jsonBody('data.color');\r",
+							"    pm.response.to.have.jsonBody('data.pantone_value');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check support object contains url and text fields\", function () {\r",
+							"    pm.response.to.have.jsonBody('support.url');\r",
+							"    pm.response.to.have.jsonBody('support.text');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data type for each key in the data object is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.data.id).to.be.a('number');\r",
+							"    pm.expect(jsonData.data.name).to.be.a('string');\r",
+							"    pm.expect(jsonData.data.year).to.be.a('number');\r",
+							"    pm.expect(jsonData.data.color).to.be.a('string');\r",
+							"    pm.expect(jsonData.data.pantone_value).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data type for each key in the support object is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.support.url).to.be.a('string');\r",
+							"    pm.expect(jsonData.support.text).to.be.a('string');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/unknown/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"unknown",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Check response contains all keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('name');\r",
+							"    pm.response.to.have.jsonBody('job');\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('createdAt');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data type for each key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.name).to.be.a('string');\r",
+							"    pm.expect(jsonData.job).to.be.a('string');\r",
+							"    pm.expect(jsonData.id).to.be.a('string');\r",
+							"    pm.expect(jsonData.createdAt).to.be.a('string');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check name is morpheus\", function () {\r",
+							"    var name = pm.response.json().name;\r",
+							"    pm.expect(name).to.eql(\"morpheus\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check job is leader\", function () {\r",
+							"    var job = pm.response.json().job;\r",
+							"    pm.expect(job).to.eql(\"leader\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Check response contains all keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('name');\r",
+							"    pm.response.to.have.jsonBody('job');\r",
+							"    pm.response.to.have.jsonBody('updatedAt');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data type for each key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.name).to.be.a('string');\r",
+							"    pm.expect(jsonData.job).to.be.a('string');\r",
+							"    pm.expect(jsonData.updatedAt).to.be.a('string');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check name is morpheus\", function () {\r",
+							"    var name = pm.response.json().name;\r",
+							"    pm.expect(name).to.eql(\"morpheus\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check job is leader\", function () {\r",
+							"    var job = pm.response.json().job;\r",
+							"    pm.expect(job).to.eql(\"zion resident\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"zion resident\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response contains all keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('name');\r",
+							"    pm.response.to.have.jsonBody('job');\r",
+							"    pm.response.to.have.jsonBody('updatedAt');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check data type for each key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.name).to.be.a('string');\r",
+							"    pm.expect(jsonData.job).to.be.a('string');\r",
+							"    pm.expect(jsonData.updatedAt).to.be.a('string');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check name is morpheus\", function () {\r",
+							"    var name = pm.response.json().name;\r",
+							"    pm.expect(name).to.eql(\"morpheus\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check job is leader\", function () {\r",
+							"    var job = pm.response.json().job;\r",
+							"    pm.expect(job).to.eql(\"director\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"director\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Check response contains all keys\", function () {\r",
+							"\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('token');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check data type for each key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(jsonData.id).to.be.a('number');\r",
+							"    pm.expect(jsonData.token).to.be.a('string');\r",
+							"\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check id is 4\", function () {\r",
+							"    var id = pm.response.json().id;\r",
+							"    pm.expect(id).to.eql(4);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check token is QpwL5tke4Pnpja7X4\", function () {\r",
+							"    var token = pm.response.json().token;\r",
+							"    pm.expect(token).to.eql(\"QpwL5tke4Pnpja7X4\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/register",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Check status is ok, response is json\", function () {",
+					"    pm.response.to.be.ok;",
+					"    pm.response.to.be.json; ",
+					"});",
+					"",
+					"pm.test(\"Check response time is less than 400ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(400);",
+					"});"
+				]
+			}
+		}
+	]
+}
