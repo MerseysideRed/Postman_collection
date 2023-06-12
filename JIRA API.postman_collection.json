@@ -1,0 +1,880 @@
+{
+	"info": {
+		"_postman_id": "d97b0144-82d8-4db3-9c60-912ddda0dc57",
+		"name": "JIRA API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response is json\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response contains all keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('key');\r",
+							"    pm.response.to.have.jsonBody('self');\r",
+							"    pm.response.to.have.jsonBody('watchers.status');\r",
+							"    pm.response.to.have.jsonBody('watchers.warningCollection');\r",
+							"    pm.response.to.have.jsonBody('watchers.warningCollection.warnings');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check data type for each key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.be.a('string');\r",
+							"    pm.expect(jsonData.key).to.be.a('string');\r",
+							"    pm.expect(jsonData.self).to.be.a('string');\r",
+							"    pm.expect(jsonData.watchers).to.be.a('object');\r",
+							"    pm.expect(jsonData.watchers.status).to.be.a('number');\r",
+							"    pm.expect(jsonData.watchers.warningCollection).to.be.a('object');\r",
+							"    pm.expect(jsonData.watchers.warningCollection.warnings).to.be.a('array');\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"var issueId = jsonData.id;\r",
+							"pm.collectionVariables.set(\"issue_id\", issueId);\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"var issueKey = jsonData.key;\r",
+							"pm.collectionVariables.set(\"issue_key\", issueKey);\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var randomWords = pm.variables.replaceIn(\"{{$randomWords}}\");\r",
+							"pm.collectionVariables.set(\"summary\", randomWords);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"project\": {\r\n            \"id\": \"10302\"\r\n        },\r\n        \"issuetype\": {\r\n            \"id\": \"10101\"\r\n        },\r\n        \"summary\": \"{{summary}}\",\r\n        \"components\": [],\r\n        \"fixVersions\": [],\r\n        \"priority\": {\r\n            \"id\": \"3\",\r\n            \"name\": \"Medium\",\r\n            \"iconUrl\": \"https://testbase.atlassian.net/images/icons/priorities/medium.svg\"\r\n        },\r\n        \"labels\": []\r\n    },\r\n    \"update\": {},\r\n    \"watchers\": [\r\n        \"62137d8a758035006833851c\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Issue after creation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response is json\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response contains all main keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('expand');\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('self');\r",
+							"    pm.response.to.have.jsonBody('key');\r",
+							"    pm.response.to.have.jsonBody('fields');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check data type for each main key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.expand).to.be.a('string');\r",
+							"    pm.expect(jsonData.id).to.be.a('string');\r",
+							"    pm.expect(jsonData.self).to.be.a('string');\r",
+							"    pm.expect(jsonData.key).to.be.a('string');\r",
+							"    pm.expect(jsonData.fields).to.be.a('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check key value is \"${pm.variables.get(\"issue_key\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_key\");\r",
+							"    var responseValue = pm.response.json().key;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check id value is \"${pm.variables.get(\"issue_id\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_id\");\r",
+							"    var responseValue = pm.response.json().id;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check summary value is \"${pm.variables.get(\"summary\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"summary\").toLowerCase();\r",
+							"    var responseValue = pm.response.json().fields.summary.toLowerCase();\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check assignee value is null`, function () {\r",
+							"    var responseValue = pm.response.json().fields.assignee;\r",
+							"    pm.expect(responseValue).to.eql(null);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check status value of issue is TO DO`, function () {\r",
+							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
+							"    pm.expect(responseValue).to.eql(\"К выполнению\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Issue summary",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var randomWords = pm.variables.replaceIn(\"{{$randomWords}}\");\r",
+							"pm.collectionVariables.set(\"summary\", randomWords);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fields\": {\r\n        \"summary\": \"{{summary}}\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_key}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Issue after update summary",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response is json\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response contains all main keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('expand');\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('self');\r",
+							"    pm.response.to.have.jsonBody('key');\r",
+							"    pm.response.to.have.jsonBody('fields');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check data type for each main key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.expand).to.be.a('string');\r",
+							"    pm.expect(jsonData.id).to.be.a('string');\r",
+							"    pm.expect(jsonData.self).to.be.a('string');\r",
+							"    pm.expect(jsonData.key).to.be.a('string');\r",
+							"    pm.expect(jsonData.fields).to.be.a('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check key value is \"${pm.variables.get(\"issue_key\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_key\");\r",
+							"    var responseValue = pm.response.json().key;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check id value is \"${pm.variables.get(\"issue_id\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_id\");\r",
+							"    var responseValue = pm.response.json().id;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check summary value is \"${pm.variables.get(\"summary\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"summary\").toLowerCase();\r",
+							"    var responseValue = pm.response.json().fields.summary.toLowerCase();\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check assignee value is null`, function () {\r",
+							"    var responseValue = pm.response.json().fields.assignee;\r",
+							"    pm.expect(responseValue).to.eql(null);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check status value of issue is TO DO`, function () {\r",
+							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
+							"    pm.expect(responseValue).to.eql(\"К выполнению\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_key}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add assignee to issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"{{accountId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_key}}/assignee",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_key}}",
+						"assignee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Issue after addition of assignee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response is json\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response contains all main keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('expand');\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('self');\r",
+							"    pm.response.to.have.jsonBody('key');\r",
+							"    pm.response.to.have.jsonBody('fields');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check data type for each main key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.expand).to.be.a('string');\r",
+							"    pm.expect(jsonData.id).to.be.a('string');\r",
+							"    pm.expect(jsonData.self).to.be.a('string');\r",
+							"    pm.expect(jsonData.key).to.be.a('string');\r",
+							"    pm.expect(jsonData.fields).to.be.a('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check key value is \"${pm.variables.get(\"issue_key\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_key\");\r",
+							"    var responseValue = pm.response.json().key;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check id value is \"${pm.variables.get(\"issue_id\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_id\");\r",
+							"    var responseValue = pm.response.json().id;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check summary value is \"${pm.variables.get(\"summary\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"summary\").toLowerCase();\r",
+							"    var responseValue = pm.response.json().fields.summary.toLowerCase();\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check accountId value is \"${pm.variables.get(\"accountId\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"accountId\");\r",
+							"    var responseValue = pm.response.json().fields.assignee.accountId;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check status value of issue is TO DO`, function () {\r",
+							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
+							"    pm.expect(responseValue).to.eql(\"К выполнению\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create transition to In Work status for Issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"transition\": {\r\n        \"id\": \"4\",\r\n        \"name\": \"Ход запуска\",\r\n        \"hasScreen\": false,\r\n        \"isGlobal\": false,\r\n        \"isInitial\": false,\r\n        \"isConditional\": true,\r\n        \"isLooped\": false,\r\n        \"to\": {\r\n            \"id\": \"3\",\r\n            \"name\": \"В работе\",\r\n            \"statusCategory\": {\r\n                \"id\": 4\r\n            }\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_key}}/transitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_key}}",
+						"transitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Issue after transition issue to In Work status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response is json\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response contains all main keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('expand');\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('self');\r",
+							"    pm.response.to.have.jsonBody('key');\r",
+							"    pm.response.to.have.jsonBody('fields');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check data type for each main key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.expand).to.be.a('string');\r",
+							"    pm.expect(jsonData.id).to.be.a('string');\r",
+							"    pm.expect(jsonData.self).to.be.a('string');\r",
+							"    pm.expect(jsonData.key).to.be.a('string');\r",
+							"    pm.expect(jsonData.fields).to.be.a('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check key value is \"${pm.variables.get(\"issue_key\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_key\");\r",
+							"    var responseValue = pm.response.json().key;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check id value is \"${pm.variables.get(\"issue_id\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_id\");\r",
+							"    var responseValue = pm.response.json().id;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check summary value is \"${pm.variables.get(\"summary\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"summary\").toLowerCase();\r",
+							"    var responseValue = pm.response.json().fields.summary.toLowerCase();\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check accountId value is \"${pm.variables.get(\"accountId\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"accountId\");\r",
+							"    var responseValue = pm.response.json().fields.assignee.accountId;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check status value of issue is In Work`, function () {\r",
+							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
+							"    pm.expect(responseValue).to.eql(\"В работе\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create transition to Done status for Issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"transition\": {\r\n        \"id\": \"2\",\r\n        \"name\": \"Закрыть задачу\",\r\n        \"hasScreen\": true,\r\n        \"isGlobal\": false,\r\n        \"isInitial\": false,\r\n        \"isConditional\": true,\r\n        \"isLooped\": false,\r\n        \"to\": {\r\n            \"id\": \"3\",\r\n            \"name\": \"Закрыто\",\r\n            \"statusCategory\": {\r\n                \"id\": 3\r\n            }\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_key}}/transitions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_key}}",
+						"transitions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Issue after transition issue to Closed status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response is json\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response contains all main keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('expand');\r",
+							"    pm.response.to.have.jsonBody('id');\r",
+							"    pm.response.to.have.jsonBody('self');\r",
+							"    pm.response.to.have.jsonBody('key');\r",
+							"    pm.response.to.have.jsonBody('fields');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check data type for each main key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.expand).to.be.a('string');\r",
+							"    pm.expect(jsonData.id).to.be.a('string');\r",
+							"    pm.expect(jsonData.self).to.be.a('string');\r",
+							"    pm.expect(jsonData.key).to.be.a('string');\r",
+							"    pm.expect(jsonData.fields).to.be.a('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check key value is \"${pm.variables.get(\"issue_key\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_key\");\r",
+							"    var responseValue = pm.response.json().key;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check id value is \"${pm.variables.get(\"issue_id\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"issue_id\");\r",
+							"    var responseValue = pm.response.json().id;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check summary value is \"${pm.variables.get(\"summary\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"summary\").toLowerCase();\r",
+							"    var responseValue = pm.response.json().fields.summary.toLowerCase();\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check accountId value is \"${pm.variables.get(\"accountId\")}\"`, function () {\r",
+							"    var collectionVariableValue = pm.variables.get(\"accountId\");\r",
+							"    var responseValue = pm.response.json().fields.assignee.accountId;\r",
+							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
+							"});\r",
+							"\r",
+							"pm.test(`Check status value of issue is Closed`, function () {\r",
+							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
+							"    pm.expect(responseValue).to.eql(\"Готово\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Issue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/rest/api/3/issue/{{issue_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Issue after deletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check response is json\", function () {\r",
+							"    pm.response.to.be.json; \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check response contains all keys\", function () {\r",
+							"    pm.response.to.have.jsonBody('errorMessages');\r",
+							"    pm.response.to.have.jsonBody('errors');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check data type for each key in response is correct\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.errorMessages).to.be.a('array');\r",
+							"    pm.expect(jsonData.errors).to.be.a('object');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://testbase.atlassian.net/rest/api/3/issue/{{issue_id}}",
+					"protocol": "https",
+					"host": [
+						"testbase",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"3",
+						"issue",
+						"{{issue_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{login}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Check response time is less than 2000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "password",
+			"value": "ATATT3xFfGF0P5ZVU0T_KhJd2aU_EXwINqnoZY60U-42T-i3uo4fnLsiQWrdHJv_8SD0bDObQymamFybznxq-VtSgC5suGl_eBU_B-xMpQG7ig-316D4EakAtKsllbhRzPwZaj3_XTGKnjLGjJOTWDENtUElxL5C8-X8eTLNoUlvG6ouhGw9Ops=F07BD8CB",
+			"type": "default"
+		},
+		{
+			"key": "base_url",
+			"value": "https://testbase.atlassian.net",
+			"type": "default"
+		},
+		{
+			"key": "login",
+			"value": "mail.for.testbase@gmail.com",
+			"type": "default"
+		},
+		{
+			"key": "issue_id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "issue_key",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "summary",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "accountId",
+			"value": "62137d8a758035006833851c",
+			"type": "default"
+		}
+	]
+}
