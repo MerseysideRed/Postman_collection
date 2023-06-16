@@ -75,7 +75,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"fields\": {\r\n        \"project\": {\r\n            \"id\": \"10302\"\r\n        },\r\n        \"issuetype\": {\r\n            \"id\": \"10101\"\r\n        },\r\n        \"summary\": \"{{summary}}\",\r\n        \"components\": [],\r\n        \"fixVersions\": [],\r\n        \"priority\": {\r\n            \"id\": \"3\",\r\n            \"name\": \"Medium\",\r\n            \"iconUrl\": \"https://testbase.atlassian.net/images/icons/priorities/medium.svg\"\r\n        },\r\n        \"labels\": []\r\n    },\r\n    \"update\": {},\r\n    \"watchers\": [\r\n        \"62137d8a758035006833851c\"\r\n    ]\r\n}",
+					"raw": "{\r\n    \"fields\": {\r\n        \"project\": {\r\n            \"id\": \"{{project_id}}\"\r\n        },\r\n        \"issuetype\": {\r\n            \"id\": \"10004\"\r\n        },\r\n        \"summary\": \"{{summary}}\",\r\n        \"labels\": [],\r\n        \"reporter\": {\r\n            \"id\": \"{{accountId}}\"\r\n        },\r\n        \"customfield_10021\": []\r\n    },\r\n    \"update\": {},\r\n    \"watchers\": [\r\n        \"{{accountId}}\"\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -154,7 +154,7 @@
 							"\r",
 							"pm.test(`Check status value of issue is TO DO`, function () {\r",
 							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
-							"    pm.expect(responseValue).to.eql(\"К выполнению\");\r",
+							"    pm.expect(responseValue).to.eql(\"To Do\");\r",
 							"});\r",
 							"\r",
 							""
@@ -292,7 +292,7 @@
 							"\r",
 							"pm.test(`Check status value of issue is TO DO`, function () {\r",
 							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
-							"    pm.expect(responseValue).to.eql(\"К выполнению\");\r",
+							"    pm.expect(responseValue).to.eql(\"To Do\");\r",
 							"});\r",
 							""
 						],
@@ -423,7 +423,7 @@
 							"\r",
 							"pm.test(`Check status value of issue is TO DO`, function () {\r",
 							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
-							"    pm.expect(responseValue).to.eql(\"К выполнению\");\r",
+							"    pm.expect(responseValue).to.eql(\"To Do\");\r",
 							"});\r",
 							"\r",
 							"\r",
@@ -453,7 +453,7 @@
 			"response": []
 		},
 		{
-			"name": "Create transition to In Work status for Issue",
+			"name": "Create transition to In Progress status for Issue",
 			"event": [
 				{
 					"listen": "test",
@@ -472,7 +472,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"transition\": {\r\n        \"id\": \"4\",\r\n        \"name\": \"Ход запуска\",\r\n        \"hasScreen\": false,\r\n        \"isGlobal\": false,\r\n        \"isInitial\": false,\r\n        \"isConditional\": true,\r\n        \"isLooped\": false,\r\n        \"to\": {\r\n            \"id\": \"3\",\r\n            \"name\": \"В работе\",\r\n            \"statusCategory\": {\r\n                \"id\": 4\r\n            }\r\n        }\r\n    }\r\n}",
+					"raw": "{\r\n    \"transition\": {\r\n        \"id\": \"21\",\r\n        \"name\": \"In Progress\",\r\n        \"hasScreen\": false,\r\n        \"isGlobal\": true,\r\n        \"isInitial\": false,\r\n        \"isConditional\": false,\r\n        \"isLooped\": false,\r\n        \"to\": {\r\n            \"id\": \"10001\",\r\n            \"name\": \"In Progress\",\r\n            \"statusCategory\": {\r\n                \"id\": 4\r\n            }\r\n        }\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -497,7 +497,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Issue after transition issue to In Work status",
+			"name": "Get Issue after transition issue to In Progress status",
 			"event": [
 				{
 					"listen": "test",
@@ -552,9 +552,9 @@
 							"    pm.expect(collectionVariableValue).to.eql(responseValue);\r",
 							"});\r",
 							"\r",
-							"pm.test(`Check status value of issue is In Work`, function () {\r",
+							"pm.test(`Check status value of issue is In Progress`, function () {\r",
 							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
-							"    pm.expect(responseValue).to.eql(\"В работе\");\r",
+							"    pm.expect(responseValue).to.eql(\"In Progress\");\r",
 							"});\r",
 							"\r",
 							"\r",
@@ -603,7 +603,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"transition\": {\r\n        \"id\": \"2\",\r\n        \"name\": \"Закрыть задачу\",\r\n        \"hasScreen\": true,\r\n        \"isGlobal\": false,\r\n        \"isInitial\": false,\r\n        \"isConditional\": true,\r\n        \"isLooped\": false,\r\n        \"to\": {\r\n            \"id\": \"3\",\r\n            \"name\": \"Закрыто\",\r\n            \"statusCategory\": {\r\n                \"id\": 3\r\n            }\r\n        }\r\n    }\r\n}",
+					"raw": "{\r\n    \"transition\": {\r\n        \"id\": \"31\",\r\n        \"name\": \"Done\",\r\n        \"hasScreen\": false,\r\n        \"isGlobal\": true,\r\n        \"isInitial\": false,\r\n        \"isConditional\": false,\r\n        \"isLooped\": false,\r\n        \"to\": {\r\n            \"id\": \"10002\",\r\n            \"name\": \"Done\",\r\n            \"statusCategory\": {\r\n                \"id\": 3\r\n            }\r\n        }\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -685,7 +685,7 @@
 							"\r",
 							"pm.test(`Check status value of issue is Closed`, function () {\r",
 							"    var responseValue = pm.response.json().fields.status.statusCategory.name;\r",
-							"    pm.expect(responseValue).to.eql(\"Готово\");\r",
+							"    pm.expect(responseValue).to.eql(\"Done\");\r",
 							"});\r",
 							"\r",
 							"\r",
@@ -843,17 +843,17 @@
 	"variable": [
 		{
 			"key": "password",
-			"value": "ATATT3xFfGF0P5ZVU0T_KhJd2aU_EXwINqnoZY60U-42T-i3uo4fnLsiQWrdHJv_8SD0bDObQymamFybznxq-VtSgC5suGl_eBU_B-xMpQG7ig-316D4EakAtKsllbhRzPwZaj3_XTGKnjLGjJOTWDENtUElxL5C8-X8eTLNoUlvG6ouhGw9Ops=F07BD8CB",
+			"value": "ATATT3xFfGF0FJhFRTCYvaCB8t7_AR4bpGAFmAYWa0oPaiwJpY7CcuhMla6KyP6ovmypEMLE0cApy-TxslohZBud6h6a1jKkEjHfG5AAfOTSK9bUTz6LIRr-_nJ8GTsHLk9nSOPbquK5foA9n5uX_Tn3wq8QsR7ya25SsN7VTWz2s3pxyw0gVRQ=E9DEB989",
 			"type": "default"
 		},
 		{
 			"key": "base_url",
-			"value": "https://testbase.atlassian.net",
+			"value": "https://qapracticetest.atlassian.net",
 			"type": "default"
 		},
 		{
 			"key": "login",
-			"value": "mail.for.testbase@gmail.com",
+			"value": "a.romanovskiy94@gmail.com",
 			"type": "default"
 		},
 		{
@@ -873,7 +873,12 @@
 		},
 		{
 			"key": "accountId",
-			"value": "62137d8a758035006833851c",
+			"value": "712020:6cbf67a0-05eb-4673-a963-aa86b36c17bc",
+			"type": "default"
+		},
+		{
+			"key": "project_id",
+			"value": "10000",
 			"type": "default"
 		}
 	]
